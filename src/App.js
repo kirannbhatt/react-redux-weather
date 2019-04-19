@@ -1,28 +1,40 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react";
+import InputBox from "./components/InputBox";
+import WeatherWidget from "./components/WeatherWidget";
+
+import { Card, Container, Row, Col } from "reactstrap";
+import CardBody from "reactstrap/lib/CardBody";
+import { connect } from "react-redux";
 
 class App extends Component {
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
+      <Container className="center">
+        <Row>
+          <Col xs="6">
+            <Card>
+              <CardBody>
+                <InputBox />
+              </CardBody>
+            </Card>
+          </Col>
+          <Col xs="6">
+            <Card>
+              <CardBody>
+                {this.props.weather.map((post,i) => (
+                  <WeatherWidget key={i} weathers={post} />
+                ))}
+              </CardBody>
+            </Card>
+          </Col>
+        </Row>
+      </Container>
     );
   }
 }
-
-export default App;
+const mapStateToProps = state => {
+  return {
+    weather: state
+  };
+};
+export default connect(mapStateToProps)(App);
